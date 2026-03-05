@@ -1,0 +1,10 @@
+{
+  "name": "framer-micro-poster",
+  "version": "1.0.0",
+  "description": "Post micro-blog entries to Framer CMS and syndicate to Bluesky, Mastodon, and Threads — one request, no cron, no RSS.",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "framer-api": "^0.1.1"
+  }
+}

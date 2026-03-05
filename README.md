@@ -266,7 +266,15 @@ const CONFIG = {
 
 **Add a new syndication target.** Write a `postToX(item)` function that takes `{ text, category }` and add it to the syndication block in the handler. Follow the same try/catch pattern.
 
-**Use with Claude (or any AI assistant).** Write a Claude Project skill file that describes the endpoint, auth, request format, and content rules. Include the auth token in a `config.json` the skill can read. The skill should specify: never rewrite the user's text, use it verbatim, and post immediately when triggered. Any assistant that can make HTTP requests works — Claude's skill system just makes it repeatable and rule-bound.
+**Use with Claude (or any AI assistant).** Write a Claude Project skill file that describes the endpoint, auth, request format, and content rules. Store the auth token in a `config.json` alongside the skill file — Claude's computer use tools can read local files in the skill directory, so the token stays on disk and never appears in conversation history or project instructions. The skill should specify: never rewrite the user's text, use it verbatim, and post immediately when triggered. Any assistant that can make HTTP requests works — Claude's skill system just makes it repeatable and rule-bound.
+
+A minimal skill structure looks like:
+```
+your-skill/
+  SKILL.md       # Instructions: endpoint, request format, content rules
+  config.json    # { "auth_token": "your-bearer-token" }
+```
+The skill reads `config.json` at runtime to authenticate requests. This keeps secrets out of your project instructions and chat history.
 
 **Connect to a shortcut or automation.** iOS Shortcuts, Raycast scripts, Alfred workflows — anything that can POST JSON works. No SDK needed.
 

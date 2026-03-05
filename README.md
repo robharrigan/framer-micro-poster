@@ -12,7 +12,9 @@ Framer doesn't have a mobile app. If you want to post something from your phone,
 
 This project solves that. It's a single API endpoint that accepts a POST request, writes to your Framer CMS via the [Framer Server API](https://www.framer.com/developers/server-api-quick-start), publishes the site to production, and syndicates to Bluesky, Mastodon, and Threads. One request does everything.
 
-Because it's just an HTTP endpoint, anything that can make a POST request becomes a publishing interface — an AI assistant, an iOS Shortcut, a Raycast script, a curl command from a terminal app on your phone. No Framer editor required.
+Because it's just an HTTP endpoint, anything that can make a POST request becomes a publishing interface — an iOS Shortcut, a Raycast script, a curl command from a terminal app on your phone. No Framer editor required.
+
+This was originally built to work with [Claude](https://claude.ai) as a conversational publishing workflow. Claude Projects support custom skills — structured instructions that teach the assistant how to use specific tools. You write a skill file that describes the endpoint, the auth pattern, the request format, and any rules about how content should be handled. Drop it in a project, and the assistant knows how to post on your behalf. Say "post a riff" followed by your text, and it fires the request. No forms, no UI, no context-switching. The skill file approach means the assistant doesn't guess or improvise — it follows a defined contract, which matters when the output is going live on your site and across social platforms.
 
 The syndication layer is deliberately simple. Each platform has its own posting function. Failures are isolated — if Threads goes down, your Bluesky and Mastodon posts still go through. Every platform is optional; leave the env vars empty and it gets skipped.
 
@@ -264,7 +266,7 @@ const CONFIG = {
 
 **Add a new syndication target.** Write a `postToX(item)` function that takes `{ text, category }` and add it to the syndication block in the handler. Follow the same try/catch pattern.
 
-**Use with an AI assistant.** This was originally built to be called from Claude (Anthropic) as part of a conversational posting workflow. Any AI assistant that can make HTTP requests can use this endpoint — just give it the URL, auth token, and the request format.
+**Use with Claude (or any AI assistant).** Write a Claude Project skill file that describes the endpoint, auth, request format, and content rules. Include the auth token in a `config.json` the skill can read. The skill should specify: never rewrite the user's text, use it verbatim, and post immediately when triggered. Any assistant that can make HTTP requests works — Claude's skill system just makes it repeatable and rule-bound.
 
 **Connect to a shortcut or automation.** iOS Shortcuts, Raycast scripts, Alfred workflows — anything that can POST JSON works. No SDK needed.
 

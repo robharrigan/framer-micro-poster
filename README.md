@@ -8,11 +8,13 @@ No RSS feeds. No cron jobs. No polling. No third-party syndication services.
 
 ## Why This Exists
 
-Framer is a powerful site builder with a capable CMS, but it doesn't have a native API for creating content programmatically. The [Framer Server API](https://www.framer.com/developers/server-api-quick-start) (via the `framer-api` npm package) opens that door — you can connect to your project, discover collections, add items, and trigger publishes from code.
+Framer doesn't have a mobile app. If you want to post something from your phone, you can't — the editor is desktop-only. That's fine for layout work, but it's a dealbreaker for micro-blogging. You have a thought, you want to publish it, and you're not going to open a laptop for a two-sentence post.
 
-This project uses that API to build a micro-blogging pipeline: write a short post, hit one endpoint, and it shows up on your site and across your social accounts within seconds.
+This project solves that. It's a single API endpoint that accepts a POST request, writes to your Framer CMS via the [Framer Server API](https://www.framer.com/developers/server-api-quick-start), publishes the site to production, and syndicates to Bluesky, Mastodon, and Threads. One request does everything.
 
-The syndication layer is deliberately simple. Each platform (Bluesky, Mastodon, Threads) has its own posting function. Failures are isolated — if Threads goes down, your Bluesky and Mastodon posts still go through. Every platform is optional; just leave the env vars empty and it gets skipped.
+Because it's just an HTTP endpoint, anything that can make a POST request becomes a publishing interface — an AI assistant, an iOS Shortcut, a Raycast script, a curl command from a terminal app on your phone. No Framer editor required.
+
+The syndication layer is deliberately simple. Each platform has its own posting function. Failures are isolated — if Threads goes down, your Bluesky and Mastodon posts still go through. Every platform is optional; leave the env vars empty and it gets skipped.
 
 ---
 
